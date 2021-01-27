@@ -1,12 +1,14 @@
-import React, { Component } from 'react';
+import React, { Component, useRef, useState, useEffect } from 'react';
 import {
 StyleSheet,
 Text,
 View,
 TextInput,
 Button,
-TouchableOpacity
+TouchableOpacity,
+Animated
 } from 'react-native';
+import * as Progress from 'react-native-progress';
 
 export default class App extends Component {
 constructor(props) {
@@ -25,6 +27,28 @@ this.state = {
 };
 this.operations = ['DEL', '+', '-', 'Blue', "Red"];
 }
+
+
+useInterval(callback, delay) {
+  const savedCallback = useRef();
+
+  // Remember the latest callback.
+  useEffect(() => {
+    savedCallback.current = callback;
+  }, [callback]);
+
+  // Set up the interval.
+  useEffect(() => {
+    function tick() {
+      savedCallback.current();
+    }
+    if (delay !== null) {
+      let id = setInterval(tick, delay);
+      return () => clearInterval(id);
+    }
+  }, [delay]);
+}
+
 
 
 suma(){
@@ -215,6 +239,7 @@ case 'DEL':
   });
   break
 
+
 case 'Blue':
   this.changeToBlue();
   console.log("ITS BLUE 100");
@@ -268,7 +293,26 @@ onPress={() => this.operate(this.operations[i])} >
 }
 
 return (
+
 <View style={styles.container}>
+<View style={styles.texto}>
+   <Text>    sjashfjshfafhaslh </Text>
+ </View>
+ <View style={styles.progressBarA}>
+ <Progress.Bar progress={this.state.calculationTextA/4000}
+ width={200} color={'blue'} height={45} borderWidth={0}
+ animated={true}/>
+ <Progress.Bar progress={this.state.calculationTextB/4000} width={200} color={'red'}
+ animated={true} height={45} borderWidth={0}
+ style={{ transform: [{ rotate: '180deg'}]}}/>
+
+
+
+ </View>
+
+
+
+
 <View style={styles.result}>
 <Text style={styles.resultText}>{this.state.resultText}</Text>
 </View>
@@ -309,6 +353,12 @@ color: 'green'
 btnText: {
 fontSize: 40,
 color: 'white'
+},
+texto: {
+marginTop: 60,
+fontSize: 25,
+paddingRight:100,
+color: 'pink'
 },
 white: {
 color: 'white'
@@ -362,5 +412,14 @@ flex: 1,
 justifyContent: 'space-around',
 alignItems:'stretch',
 backgroundColor: '#454e54'
-}
+},
+progressBarA: {
+
+   flexDirection: 'row',
+   justifyContent:'space-between',
+   alignItems:'center',
+
+
+ },
+
 });
