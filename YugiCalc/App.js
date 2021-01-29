@@ -1,338 +1,271 @@
 import React, { Component, useRef, useState, useEffect } from 'react';
-import {
-StyleSheet,
-Text,
-View,
-TextInput,
-Button,
-TouchableOpacity,
-Animated
-} from 'react-native';
+import {StyleSheet,Text,View,TextInput,Button,TouchableOpacity,Animated,Image} from 'react-native';
 import * as Progress from 'react-native-progress';
+import ReactDice from 'react-dice-roller';
 
 export default class App extends Component {
 constructor(props) {
 super();
 this.rollADice = this.rollADice.bind(this);
-
 this.changeToBlue = this.changeToBlue.bind(this);
 this.suma = this.suma.bind(this);
 this.changeToRed = this.changeToRed.bind(this);
 this.substract = this.substract.bind(this);
 this.state = {
-  resultText: "",
-  calculationTextA: 4000,
-  calculationTextB: 4000,
-  player: "A"
+  resultText: "",calculationTextA: 4000,
+  calculationTextB: 4000,player: "A",dado: 1,
+  dadoPic: "YugiCalc/assets/diceImages/dice6.png"
 };
 this.operations = ['DEL', '+', '-', 'Blue', "Red"];
 }
 
-
-useInterval(callback, delay) {
-  const savedCallback = useRef();
-
-  // Remember the latest callback.
-  useEffect(() => {
-    savedCallback.current = callback;
-  }, [callback]);
-
-  // Set up the interval.
-  useEffect(() => {
-    function tick() {
-      savedCallback.current();
-    }
-    if (delay !== null) {
-      let id = setInterval(tick, delay);
-      return () => clearInterval(id);
-    }
-  }, [delay]);
-}
-
-
-
 suma(){
   if (this.state.player === "A"){
-
-  let resultTextLength = this.state.resultText.length;
-  if (resultTextLength > 0) {
-
-  if(this.state.resultText.slice(0)==="0"){
-    myString = this.state.resultText;
-    myString = myString.replace('/^0/','')
-    this.setState({resultText: myString })
-  }
-  var temp = this.state.resultText
-  var tempNumber = parseInt(temp)
-  this.setState({calculationTextA : (this.state.calculationTextA + tempNumber),
-    resultText: ""
-    });
-  }
-}
-else if (this.state.player ==="B"){
-  let resultTextLength = this.state.resultText.length;
-  if (resultTextLength > 0) {
-
-  if(this.state.resultText.slice(0)==="0"){
-    myString = this.state.resultText;
-    myString = myString.replace('/^0/','')
-    this.setState({resultText: myString })
-  }
-  var temp = this.state.resultText
-  var tempNumber = parseInt(temp)
-  this.setState({calculationTextA : (this.state.calculationTextA + tempNumber),
-    resultText: ""
-    });
-  }
-
-}
+    let resultTextLength = this.state.resultText.length;
+    if (resultTextLength > 0) {
+      if(this.state.resultText.slice(0)==="0"){
+        myString = this.state.resultText;
+        myString = myString.replace('/^0/','')
+        this.setState({resultText: myString })
+        }
+      var temp = this.state.resultText
+      var tempNumber = parseInt(temp)
+      this.setState({calculationTextA : (this.state.calculationTextA + tempNumber),
+        resultText: ""
+        });
+      }
+    }
+  else if (this.state.player ==="B"){
+    let resultTextLength = this.state.resultText.length;
+    if (resultTextLength > 0) {
+      if(this.state.resultText.slice(0)==="0"){
+        myString = this.state.resultText;
+        myString = myString.replace('/^0/','')
+        this.setState({resultText: myString })
+        }
+      var temp = this.state.resultText
+      var tempNumber = parseInt(temp)
+      this.setState({calculationTextA : (this.state.calculationTextA + tempNumber),
+        resultText: ""});
+      }
+    }
 }
 substract(){
   if (this.state.player === "A"){
-  let resultTextLength = this.state.resultText.length;
-  if (resultTextLength > 0) {
-  if(this.state.resultText.slice(0)==="0"){
-    myString = this.state.resultText;
-    myString = myString.replace('/^0/','')
-    this.setState({resultText: myString })
+    let resultTextLength = this.state.resultText.length;
+    if (resultTextLength > 0) {
+    if(this.state.resultText.slice(0)==="0"){
+      myString = this.state.resultText;
+      myString = myString.replace('/^0/','')
+      this.setState({resultText: myString })
+    }
+    var temp = this.state.resultText;
+    var tempNumber = parseInt(temp)
+    this.setState({calculationTextA : (this.state.calculationTextA - tempNumber),
+      resultText: ""});
   }
-  var temp = this.state.resultText;
-  var tempNumber = parseInt(temp)
-  this.setState({calculationTextA : (this.state.calculationTextA - tempNumber),
-    resultText: ""
-    });
-}
-}
-else if (this.state.player==="B"){
-  let resultTextLength = this.state.resultText.length;
-  if (resultTextLength > 0) {
-  if(this.state.resultText.slice(0)==="0"){
-    myString = this.state.resultText;
-    myString = myString.replace('/^0/','')
-    this.setState({resultText: myString })
   }
-  var temp = this.state.resultText;
-  var tempNumber = parseInt(temp)
-  this.setState({calculationTextB : (this.state.calculationTextB - tempNumber),
-    resultText: ""
-    });
+  else if (this.state.player==="B"){
+    let resultTextLength = this.state.resultText.length;
+    if (resultTextLength > 0) {
+    if(this.state.resultText.slice(0)==="0"){
+      myString = this.state.resultText;
+      myString = myString.replace('/^0/','')
+      this.setState({resultText: myString })
+    }
+    var temp = this.state.resultText;
+    var tempNumber = parseInt(temp)
+    this.setState({calculationTextB : (this.state.calculationTextB - tempNumber),
+      resultText: ""
+      });
+  }
+  }
 }
-}
-}
-
-
 changeToBlue(){
       this.setState({
-        player: "A"
-      });
-      console.log(this.state.player)
+        player: "A"});
     };
 rollADice(){
-      console.log("ROLL A DICE")
+      console.log("ROLL A DICE");
+      const images = {
+        uno: {
+          imgName: 'Dog',
+          uri: require('YugiCalc/assets/diceImages/dice1.png')
+        },
+        dos: {
+          imgName: 'Cat on a Boat',
+          uri: require('YugiCalc/assets/diceImages/dice2.png')
+        }
+      }
+      let imgSource = images.uno.uri;
+      return imgSource
+
     };
 changeToRed () {
       this.setState({
-        player: "B"
-      });
-      console.log(this.state.player)
+        player: "B"});
     };
 calculationResult() {
   const text = this.state.resultText;
   this.setState({
-  calculationTextA: eval(text)
-  })
+  calculationTextA: eval(text)})
   }
-
-
 validate(){
 const text=this.state.resultText
-lastChar = text.slice(-1);
-firstChar = text.slice(0);
 
 switch(text.slice(0)){
-case '+':
-  console.log("first char is " + text)
-  this.suma(text);
+  case '+':
+    this.suma(text);
 
-case '-':
-  console.log("resta")
-  this.substract(text);
-case '1':
-  console.log("1 is pressed" )
+  case '-':
+    this.substract(text);
+  case '1':
 
-  this.setState({resultText: this.state.resultText + "1"})
-case '2':
-  console.log("2 is pressed" )
-  this.setState({resultText: this.state.resultText + "2"})
-case '3':
-  console.log("3 is pressed" )
-  this.setState({resultText: this.state.resultText + "3"})
-case '4':
-  console.log("4 is pressed" )
-
-  this.setState({resultText: this.state.resultText + "4"})
-case '5':
-  console.log("5 is pressed" )
-  this.setState({resultText: this.state.resultText + "5"})
-case '6':
-  console.log("6 is pressed" )
-  this.setState({resultText: this.state.resultText + "6"})
-case '7':
-  console.log("7 is pressed" )
-
-  this.setState({resultText: this.state.resultText + "7"})
-case '8':
-  console.log("8 is pressed" )
-  this.setState({resultText: this.state.resultText + "8"})
-case '9':
-  console.log("9 is pressed" )
-  this.setState({resultText: this.state.resultText + "9"})
-case '0':
-  console.log("0 is pressed" )
-  this.setState({resultText: this.state.resultText + "0"})
-
-
-
-return false
-}
+    this.setState({resultText: this.state.resultText + "1"})
+  case '2':
+    this.setState({resultText: this.state.resultText + "2"})
+  case '3':
+    this.setState({resultText: this.state.resultText + "3"})
+  case '4':
+    this.setState({resultText: this.state.resultText + "4"})
+  case '5':
+    this.setState({resultText: this.state.resultText + "5"})
+  case '6':
+    this.setState({resultText: this.state.resultText + "6"})
+  case '7':
+    this.setState({resultText: this.state.resultText + "7"})
+  case '8':
+    this.setState({resultText: this.state.resultText + "8"})
+  case '9':
+      this.setState({resultText: this.state.resultText + "9"})
+  case '0':
+      this.setState({resultText: this.state.resultText + "0"})
+  return false
+  }
 return true
 }
 
-
-
-
-
 _onPressButton(text) {
-
-
-if (text == 'Reset') {
-  this.setState({
-    calculationTextA: 4000,
-    calculationTextB: 4000,
-    resultText: ""
-    })
-
-}
-else if (text == '.') {
-  var tem=this.state.resultText
-  tem = tem.replace('.','')
-  this.setState({
-    resultText: tem
-    })
-
-}
-else{
-
-  this.setState({
-    resultText: this.state.resultText + text
-    });
+  if (text == 'Reset') {
+    this.setState({
+      calculationTextA: 4000,calculationTextB: 4000,resultText: ""})
   }
+  else if (text == '.') {
+    var tem=this.state.resultText
+    tem = tem.replace('.','')
+    this.setState({
+      resultText: tem
+      })
+  }
+  else{
+    this.setState({
+      resultText: this.state.resultText + text
+      });
+    }
 }
 operate(operation) {
-switch (operation) {
-case 'DEL':
-  console.log(this.state.resultText);
-  let text = this.state.resultText.split("");
-  text.pop();
-  this.setState({
-  resultText: text.join("")
-  });
-  break
-
-
-case 'Blue':
-  this.changeToBlue();
-  console.log("ITS BLUE 100");
-  break;
-case 'Red':
-  this.changeToRed();
-  console.log("its red 104")
-  break;
-case '+':
-  this.suma();
-  console.log("Suma")
-  break;
-case '-':
-  this.substract();
-  console.log("REsta")
-  break;
-}
+  switch (operation) {
+    case 'DEL':
+      console.log(this.state.resultText);
+      let text = this.state.resultText.split("");
+      text.pop();
+      this.setState({resultText: text.join("")});
+      break
+    case 'Blue':
+      this.changeToBlue();
+      break;
+    case 'Red':
+      this.changeToRed();
+      break;
+    case '+':
+      this.suma();
+      break;
+    case '-':
+      this.substract();
+      break;
+  }
 }
 
 render() {
-let rows = [];
-let nums = [[1, 2, 3], [4, 5, 6], [7, 8, 9], ['.', 0, 'Reset']];
-for (let i = 0; i < 4; i++) {
-let row = [];
-for (let j = 0; j < 3; j++) {
-row.push(
-<TouchableOpacity
-key={nums[i][j]}
-style={styles.btn}
-onPress={() => this._onPressButton(nums[i][j])}
->
-<Text style={styles.btnText}>{nums[i][j]}</Text>
-</TouchableOpacity>
-);
-}
-rows.push(<View key={i} style={styles.row}>{row}</View>);
-}
+  let rows = [];
+  let nums = [[1, 2, 3], [4, 5, 6], [7, 8, 9], ['.', 0, 'Reset']];
+  for (let i = 0; i < 4; i++) {
+  let row = [];
+  for (let j = 0; j < 3; j++) {
+  row.push(
+  <TouchableOpacity
+  key={nums[i][j]}
+  style={styles.btn}
+  onPress={() => this._onPressButton(nums[i][j])}
+  >
+  <Text style={styles.btnText}>{nums[i][j]}</Text>
+  </TouchableOpacity>
+  );
+  }
+  rows.push(<View key={i} style={styles.row}>{row}</View>);
+  }
 
-let ops = [];
-for (let i = 0; i < 5; i++) {
-ops.push(
-<TouchableOpacity
-key={this.operations[i]}
-style={styles.btn}
-onPress={() => this.operate(this.operations[i])} >
-<Text style={[styles.btnText, styles.white]}>
-{this.operations[i]}
-</Text>
-</TouchableOpacity>
-);
-}
+  let ops = [];
+  for (let i = 0; i < 5; i++) {
+  ops.push(
+  <TouchableOpacity
+  key={this.operations[i]}
+  style={styles.btn}
+  onPress={() => this.operate(this.operations[i])} >
+  <Text style={[styles.btnText, styles.white]}>
+  {this.operations[i]}
+  </Text>
+  </TouchableOpacity>
+  );
+  }
 
-return (
+  return (
 
-<View style={styles.container}>
-<View style={styles.texto}>
-   <Text>    sjashfjshfafhaslh </Text>
- </View>
- <View style={styles.progressBarA}>
- <Progress.Bar progress={this.state.calculationTextA/4000}
- width={200} color={'blue'} height={45} borderWidth={0}
- animated={true}/>
- <Progress.Bar progress={this.state.calculationTextB/4000} width={200} color={'red'}
- animated={true} height={45} borderWidth={0}
- style={{ transform: [{ rotate: '180deg'}]}}/>
+  <View style={styles.container}>
+
+  <View style={{
+    marginTop: 60, jusifyContent: "center", alignItems: "center",
+
+  }}>
 
 
-
- </View>
-
-
-
-
-<View style={styles.result}>
-<Text style={styles.resultText}>{this.state.resultText}</Text>
-</View>
-<View style={styles.calculationA}>
-<Text style={styles.calculationTextA}>{this.state.calculationTextA} </Text>
-<Text style={styles.calculationTextB}>{this.state.calculationTextB} </Text>
+     <Image source={require("YugiCalc/assets/diceImages/dice1.png")}
+  style={{
+    width: 66, height: 58
+    }
+   }
+     />
 
 
-</View>
+   </View>
+   <View style={styles.progressBarA}>
+   <Progress.Bar progress={this.state.calculationTextA/4000}
+   width={200} color={'blue'} height={45} borderWidth={0}
+   animated={true}/>
+   <Progress.Bar progress={this.state.calculationTextB/4000} width={200} color={'red'}
+   animated={true} height={45} borderWidth={0}
+   style={{ transform: [{ rotate: '180deg'}]}}/>
 
 
 
-<View style={styles.buttons}>
-<View style={styles.numbers}>{rows}</View>
-<View style={styles.operations}>{ops}</View>
+   </View>
+    <View style={styles.result}>
+      <Text style={styles.resultText}>{this.state.resultText}</Text>
+    </View>
 
-</View>
-</View>
-);
-}
+    <View style={styles.calculationA}>
+      <Text style={styles.calculationTextA}>{this.state.calculationTextA} </Text>
+      <Text style={styles.calculationTextB}>{this.state.calculationTextB} </Text>
+    </View>
+
+    <View style={styles.buttons}>
+      <View style={styles.numbers}>{rows}</View>
+      <View style={styles.operations}>{ops}</View>
+
+    </View>
+  </View>
+  );
+  }
 }
 
 const styles = StyleSheet.create({
@@ -356,8 +289,6 @@ color: 'white'
 },
 texto: {
 marginTop: 60,
-fontSize: 25,
-paddingRight:100,
 color: 'pink'
 },
 white: {
@@ -414,12 +345,9 @@ alignItems:'stretch',
 backgroundColor: '#454e54'
 },
 progressBarA: {
-
    flexDirection: 'row',
    justifyContent:'space-between',
    alignItems:'center',
-
-
  },
 
 });
