@@ -11,14 +11,56 @@ this.changeToBlue = this.changeToBlue.bind(this);
 this.suma = this.suma.bind(this);
 this.changeToRed = this.changeToRed.bind(this);
 this.substract = this.substract.bind(this);
+this.getRandomNumber = this.getRandomNumber.bind(this);
+this.setDiceImage = this.setDiceImage.bind(this);
+
 this.state = {
   resultText: "",calculationTextA: 4000,
-  calculationTextB: 4000,player: "A",dado: 1,
-  dadoPic: "YugiCalc/assets/diceImages/dice6.png"
+  calculationTextB: 4000,player: "A",dado: 1,randomNumber: 1,
+  uri: require('YugiCalc/assets/diceImages/dice2.png'),
 };
 this.operations = ['DEL', '+', '-', 'Blue', "Red"];
 }
+getRandomNumber = () => {
+    let randomNumber = Math.floor((Math.random() * 6) + 1);
+    this.setState({
+      randomNumber: randomNumber
+    })
+    return randomNumber;
+  }
 
+
+setDiceImage = () => {
+  randNum = this.getRandomNumber();
+  switch(randNum) {
+    case 1:
+      this.setState({
+        uri: require('YugiCalc/assets/diceImages/dice1.png')})
+        break;
+    case 2:
+      this.setState({
+        uri: require('YugiCalc/assets/diceImages/dice2.png')})
+        break;
+      case 3:
+      this.setState({
+        uri: require('YugiCalc/assets/diceImages/dice3.png')})
+        break;
+      case 4:
+      this.setState({
+        uri: require('YugiCalc/assets/diceImages/dice4.png')})
+        break;
+      case 5:
+      this.setState({
+        uri: require('YugiCalc/assets/diceImages/dice5.png')})
+      break;
+      case 6:
+      this.setState({
+        uri: require('YugiCalc/assets/diceImages/dice6.png')})
+      break;
+      default:
+
+    }
+}
 suma(){
   if (this.state.player === "A"){
     let resultTextLength = this.state.resultText.length;
@@ -87,18 +129,9 @@ changeToBlue(){
     };
 rollADice(){
       console.log("ROLL A DICE");
-      const images = {
-        uno: {
-          imgName: 'Dog',
-          uri: require('YugiCalc/assets/diceImages/dice1.png')
-        },
-        dos: {
-          imgName: 'Cat on a Boat',
-          uri: require('YugiCalc/assets/diceImages/dice2.png')
-        }
-      }
-      let imgSource = images.uno.uri;
-      return imgSource
+      this.setDiceImage();
+
+
 
     };
 changeToRed () {
@@ -150,7 +183,8 @@ _onPressButton(text) {
     this.setState({
       calculationTextA: 4000,calculationTextB: 4000,resultText: ""})
   }
-  else if (text == '.') {
+  else if (text == 'Dice') {
+    this.rollADice();
     var tem=this.state.resultText
     tem = tem.replace('.','')
     this.setState({
@@ -188,7 +222,7 @@ operate(operation) {
 
 render() {
   let rows = [];
-  let nums = [[1, 2, 3], [4, 5, 6], [7, 8, 9], ['.', 0, 'Reset']];
+  let nums = [[1, 2, 3], [4, 5, 6], [7, 8, 9], ['Dice', 0, 'Reset']];
   for (let i = 0; i < 4; i++) {
   let row = [];
   for (let j = 0; j < 3; j++) {
@@ -228,13 +262,14 @@ render() {
 
   }}>
 
-
-     <Image source={require("YugiCalc/assets/diceImages/dice1.png")}
-  style={{
-    width: 66, height: 58
-    }
-   }
-     />
+<Text style={{marginBottom: 10,
+    fontSize: 20,
+    fontWeight: 'bold',
+    color: '#1A1F38'}}>You Rolled a {this.state.randomNumber}</Text>
+  <Image
+       style={{ width: 66, height: 58 , marginBottom:10 }}
+       source={this.state.uri}
+       />
 
 
    </View>
