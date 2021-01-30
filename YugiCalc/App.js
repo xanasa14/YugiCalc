@@ -1,11 +1,16 @@
+var Sound = require('react-native-sound');
+
 import React, { Component, useRef, useState, useEffect } from 'react';
 import {StyleSheet,Text,View,TextInput,Button,TouchableOpacity,Animated,Image} from 'react-native';
 import * as Progress from 'react-native-progress';
 import ReactDice from 'react-dice-roller';
 
+
 export default class App extends Component {
+
 constructor(props) {
 super();
+
 this.rollADice = this.rollADice.bind(this);
 this.changeToBlue = this.changeToBlue.bind(this);
 this.suma = this.suma.bind(this);
@@ -13,11 +18,10 @@ this.changeToRed = this.changeToRed.bind(this);
 this.substract = this.substract.bind(this);
 this.getRandomNumber = this.getRandomNumber.bind(this);
 this.setDiceImage = this.setDiceImage.bind(this);
-
 this.state = {
   resultText: "",calculationTextA: 4000,
   calculationTextB: 4000,player: "A",dado: 1,randomNumber: 1,
-  uri: require('YugiCalc/assets/diceImages/dice2.png'),
+  uri: require('YugiCalc/assets/diceImages/dice1.png'),
 };
 this.operations = ['DEL', '+', '-', 'Blue', "Red"];
 }
@@ -29,9 +33,10 @@ getRandomNumber = () => {
     return randomNumber;
   }
 
-
 setDiceImage = () => {
+
   randNum = this.getRandomNumber();
+
   switch(randNum) {
     case 1:
       this.setState({
@@ -58,8 +63,11 @@ setDiceImage = () => {
         uri: require('YugiCalc/assets/diceImages/dice6.png')})
       break;
       default:
-
     }
+
+    Sound.setCategory('Ambient', true);
+    const buttonPress = new Sound(require('YugiCalc/assets/audios/YuGiOhLifePointSoundEffect.mp3'), error => console.log(error));
+    buttonPress.play((success) => buttonPress.reset());
 }
 suma(){
   if (this.state.player === "A"){
@@ -128,11 +136,7 @@ changeToBlue(){
         player: "A"});
     };
 rollADice(){
-      console.log("ROLL A DICE");
       this.setDiceImage();
-
-
-
     };
 changeToRed () {
       this.setState({
@@ -149,11 +153,9 @@ const text=this.state.resultText
 switch(text.slice(0)){
   case '+':
     this.suma(text);
-
   case '-':
     this.substract(text);
   case '1':
-
     this.setState({resultText: this.state.resultText + "1"})
   case '2':
     this.setState({resultText: this.state.resultText + "2"})
@@ -190,6 +192,7 @@ _onPressButton(text) {
     this.setState({
       resultText: tem
       })
+
   }
   else{
     this.setState({
@@ -200,7 +203,6 @@ _onPressButton(text) {
 operate(operation) {
   switch (operation) {
     case 'DEL':
-      console.log(this.state.resultText);
       let text = this.state.resultText.split("");
       text.pop();
       this.setState({resultText: text.join("")});
@@ -245,7 +247,7 @@ render() {
   <TouchableOpacity
   key={this.operations[i]}
   style={styles.btn}
-  onPress={() => this.operate(this.operations[i])} >
+  onPress={() => this.operate(this.operations[i])}  >
   <Text style={[styles.btnText, styles.white]}>
   {this.operations[i]}
   </Text>
